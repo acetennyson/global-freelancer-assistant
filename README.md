@@ -149,3 +149,15 @@ Add to your Claude Desktop config:
 /supabase
   all.sql                 → Database schema
 ```
+
+### Cron Job Setup (Auto-send every 15 minutes)
+
+Vercel Hobby plan doesn't support sub-daily crons. Use [cron-job.org](https://cron-job.org) (free):
+
+1. Create a free account at [cron-job.org](https://cron-job.org)
+2. Create a new cron job:
+   - **URL**: `https://your-app.vercel.app/api/cron/send`
+   - **Method**: GET
+   - **Interval**: Every 15 minutes
+   - **Header**: `Authorization: Bearer your_cron_secret`
+3. Replace `your_cron_secret` with the value of `CRON_SECRET` in your `.env`

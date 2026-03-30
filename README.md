@@ -1,163 +1,170 @@
-# NightShift
+<div align="center">
 
-**Reach the right client at the right time.**
+# 🌙 NightShift
 
-An AI-powered command center for freelancers managing global clients across timezones. Built with Next.js, Supabase, Notion, and the Model Context Protocol (MCP).
+### *Reach the right client at the right time.*
 
-## The Problem
+**An AI-powered command center for freelancers managing global clients across timezones.**
 
-As a freelancer in a region like Cameroon (WAT), you're working with clients in New York, London, Tokyo. The questions you constantly face:
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)](https://nextjs.org)
+[![Notion](https://img.shields.io/badge/Notion-MCP-black?style=flat-square&logo=notion)](https://notion.so)
+[![Supabase](https://img.shields.io/badge/Supabase-Realtime-3ECF8E?style=flat-square&logo=supabase)](https://supabase.com)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript)](https://typescriptlang.org)
 
-- Who should I reach out to right now?
-- Is it a good time to send this update or invoice?
-- What should I even say to each of them?
+</div>
 
-Doing this manually for 8+ clients across 5 timezones is tedious and easy to get wrong.
+---
 
-## What This Does
+## 🌍 The Problem
 
-This app connects to your Notion "Clients" database, checks each client's local time, and uses an AI agent (via MCP) to draft contextual outreach messages — only when it makes sense to send them. You review the drafts, approve them, and the app sends automatically when the client enters their active window. You stay in control.
+There are over **1.5 billion remote workers** globally. A growing number are based in Africa, Southeast Asia, and Latin America — regions where the talent is world-class but the timezone gap with clients in the US and Europe is real and constant.
 
-## Real Use Cases
+Every day, these freelancers face the same invisible tax:
 
-### End-of-week updates to multiple clients
+> *"Is it a good time to send this update, or will it land at 2 AM their time?"*
+> *"I finished this deliverable at midnight — do I hold it until morning?"*
+> *"I have 8 clients across 5 timezones. Who do I reach out to first today?"*
 
-It's Friday 4 PM WAT. You want to send weekly status updates to all active clients. The MCP tool checks who's still in business hours, drafts a personalized update for each of those clients directly into their Notion row, and skips the ones where it's already evening — so you're not dumping work on them right before their weekend.
+**NightShift solves this.** It connects to your Notion Clients database, tracks each client's local time and active window, and uses AI to draft personalized outreach — only when it makes sense to send. You approve. The system sends. You sleep.
 
-### Sending a deliverable at the right time
+---
 
-You just finished a design file at midnight WAT. Your client in San Francisco is still at their desk (it's 3 PM PST). Instead of holding the file until morning, the app flags that the client is available and drafts a delivery message for you to review and send immediately.
+## ✨ Features
 
-### Coordinating a meeting across timezones
+| Feature | Description |
+|---|---|
+| 🕐 **World Clock Strip** | Live ticking clocks with countdown for available clients |
+| ✍️ **AI Draft Generation** | Context-aware drafts using project, last update & sent history |
+| 🧠 **AI Memory** | Each draft builds on previously sent messages for natural continuity |
+| 💬 **Chat Assistant** | Ask "Who should I reach out to first?" with full client context |
+| 🎯 **Best Overlap Window** | Shows when most clients are simultaneously available |
+| 🚀 **Send Now** | Bypass timezone window for urgent messages |
+| ⚡ **Send All Ready** | Manually trigger sends for all approved messages |
+| ⏰ **Auto-send Cron** | Runs every 15 min, sends when client enters their window |
+| 📋 **Draft History** | All previous drafts per client stored in Supabase |
+| 💬 **Responded Tracking** | Mark when a client replies |
+| 📊 **Activity Feed** | Real-time log powered by Supabase Realtime |
+| 🔍 **Search & Filter** | Find clients instantly |
+| ✏️ **Add/Edit Clients** | Floating widget, saves directly to Notion |
+| 🌗 **Theme Support** | Light / Dark / System via CSS variables |
 
-You need to schedule a call with three clients — one in London, one in New York, one in Lagos. The dashboard shows their current local times side by side, so you can instantly see the overlap window without opening a timezone converter.
+---
 
-### Scheduled sending while you sleep
+## 🤖 MCP Tools
 
-You write a message for a client in Tokyo at 11 PM WAT. Their business hours start at 1 AM your time. Mark it "Ready" and go to sleep — the app sends it automatically when they're at their desk.
-
-## Tech Stack
-
-- **Next.js 15** (App Router) — dashboard UI
-- **Supabase** — activity logs, draft history, client sync
-- **Notion SDK** (`@notionhq/client`) — reads client data, writes AI drafts
-- **MCP TypeScript SDK** — exposes tools to an AI agent (e.g. Claude Desktop)
-- **Multi-provider AI** — Gemini, Claude, DeepSeek, Groq, HuggingFace with automatic key rotation and fallback
-- **Nodemailer** — sends emails via Gmail
-- **Vercel Cron** — checks every 15 minutes and auto-sends when clients are in their window
-
-## MCP Tools
+NightShift exposes 3 tools to any MCP-compatible AI client (Claude Desktop, etc.):
 
 | Tool | What it does |
 |---|---|
-| `get_client_local_times` | Returns which clients are currently in business hours vs. inactive |
-| `generate_client_outreach` | Checks timezone, drafts a greeting in Notion if client is available |
-| `sync_and_draft` | Fetches client from Supabase, checks hours, writes draft to Notion |
+| `get_client_local_times` | Returns which clients are in business hours vs. inactive |
+| `generate_client_outreach` | Checks timezone, drafts a message in Notion if client is available |
+| `sync_and_draft` | Reads from Supabase cache, checks hours, writes AI draft to Notion |
 
-## Dashboard Features
+---
 
-- **World clock strip** — live ticking clocks for all client timezones
-- **Availability countdown** — shows time remaining in client's active window
-- **AI draft generation** — context-aware drafts using project, last update, and next action
-- **Draft history** — all previous drafts per client stored in Supabase
-- **Send Now** — bypass timezone window for urgent messages
-- **Send All Ready** — manually trigger sends for all approved messages
-- **Auto-send via cron** — runs every 15 minutes, sends when client is in their window
-- **Responded tracking** — mark when a client replies
-- **Activity feed** — real-time log of every action powered by Supabase
-- **Search & filter** — find clients instantly
+## 🛠 Tech Stack
 
-## Notion Database Setup
+```
+Next.js 15 (App Router)    → Dashboard UI
+Notion SDK + MCP SDK       → Client data & AI tools
+Supabase                   → Logs, history, Realtime
+Multi-provider AI          → Gemini → Claude → DeepSeek → Groq → HuggingFace
+Nodemailer                 → Gmail email sending
+next-themes                → Light/Dark/System theme
+Framer Motion              → Animations
+```
 
-Create a database with these columns:
+---
 
-| Column | Type |
-|---|---|
-| `Name` | Title |
-| `Timezone` | Select (IANA timezone e.g. `America/New_York`) |
-| `Status` | Status |
-| `AI_Draft` | Text |
-| `Client_Email` | Email |
-| `Send_Status` | Select (`Draft`, `Ready`, `Sent`, `Failed`, `Responded`) |
-| `Scheduled_Message` | Text |
-| `Project` | Text |
-| `Last_Update` | Text |
-| `Next_Action` | Text |
-| `Send_Window` | Text (e.g. `10:00-14:00`, defaults to `10:00-14:00`) |
+## 🗄 Notion Database Schema
 
-## Getting Started
+| Column | Type | Notes |
+|---|---|---|
+| `Name` | Title | Client name |
+| `Timezone` | Select | IANA e.g. `America/New_York` |
+| `Status` | Status | Filter: `In progress` = active |
+| `AI_Draft` | Text | Generated draft |
+| `Client_Email` | Email | Where to send |
+| `Send_Status` | Select | `Draft` / `Ready` / `Sent` / `Failed` / `Responded` |
+| `Scheduled_Message` | Text | Manual override message |
+| `Project` | Text | AI context |
+| `Last_Update` | Text | AI context |
+| `Next_Action` | Text | AI context (optional) |
+| `Send_Window` | Text | e.g. `10:00-14:00` (default) |
+
+---
+
+## 🚀 Getting Started
 
 ```bash
+git clone https://github.com/your-username/nightshift
+cd nightshift
 npm install
 cp .env.example .env.local
-# Fill in your credentials
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open **[localhost:3000/setup](http://localhost:3000/setup)** for the guided setup wizard.
 
-### Supabase Setup
+### Supabase
 
-Run `supabase/all.sql` in your Supabase SQL editor to create the required tables.
+Run `supabase/all.sql` in your Supabase SQL editor.
 
-### MCP Setup (Claude Desktop)
-
-Add to your Claude Desktop config:
+### Claude Desktop (MCP)
 
 ```json
 {
   "mcpServers": {
-    "global-freelancer-sync": {
+    "nightshift": {
       "command": "npx",
       "args": ["tsx", "/path/to/mcp-server/index.ts"],
       "env": {
         "NOTION_TOKEN": "your_token",
-        "NOTION_DATABASE_ID": "your_db_id"
+        "NOTION_DATABASE_ID": "your_db_id",
+        "GEMINI_API_KEYS": "your_gemini_key"
       }
     }
   }
 }
 ```
 
-## Project Structure
+### Auto-send Cron (cron-job.org — free)
+
+Vercel Hobby doesn't support sub-daily crons. Use [cron-job.org](https://cron-job.org):
+
+- **URL**: `https://your-app.vercel.app/api/cron/send`
+- **Method**: GET
+- **Interval**: Every 15 minutes
+- **Header**: `Authorization: Bearer YOUR_CRON_SECRET`
+
+---
+
+## 📁 Project Structure
 
 ```
-/app                      → Next.js App Router pages & API routes
-  /api
-    /clients              → Fetch active clients
-    /generate-draft       → AI draft generation
-    /send-now             → Immediate send (bypasses window)
-    /send-all-ready       → Manual cron trigger
-    /mark-ready           → Mark draft as ready to send
-    /mark-responded       → Mark client as responded
-    /draft-history        → Fetch draft history from Supabase
-    /activity             → Fetch activity feed from Supabase
-    /cron/send            → Auto-send cron job (every 15 min)
-    /notion/sync          → Sync Notion → Supabase
-  /components
-    /WorldClockStrip      → Live ticking world clocks
-    /ActivityFeed         → Supabase-powered activity log
-    /ClientForm           → Add/edit client widget
+/app
+  /setup          → Guided setup wizard with screenshots
+  /dashboard      → Main client management dashboard
+  /api            → All API routes (clients, drafts, send, cron, chat...)
+  /components     → WorldClockStrip, ActivityFeed, ChatWidget, ClientForm, ThemeToggle
 /services
-  notion.ts               → Notion API calls
-  supabase.ts             → Supabase sync, logs, draft history
-  time.ts                 → isBusinessHours() and timezone utils
-  ai.ts                   → Multi-provider AI with key rotation
-  email.ts                → Nodemailer email sending
+  notion.ts       → Notion API
+  supabase.ts     → Supabase sync, logs, history
+  time.ts         → Timezone utilities
+  ai.ts           → Multi-provider AI with key rotation
+  email.ts        → Nodemailer
+  overlap.ts      → Best overlap window
+  config.ts       → Tunable constants
 /mcp-server
-  index.ts                → MCP tool definitions
+  index.ts        → MCP tool definitions
 /supabase
-  all.sql                 → Database schema
+  all.sql         → Full database schema
 ```
 
-### Cron Job Setup (Auto-send every 15 minutes)
+---
 
-Vercel Hobby plan doesn't support sub-daily crons. Use [cron-job.org](https://cron-job.org) (free):
+<div align="center">
 
-1. Create a free account at [cron-job.org](https://cron-job.org)
-2. Create a new cron job:
-   - **URL**: `https://your-app.vercel.app/api/cron/send`
-   - **Method**: GET
-   - **Interval**: Every 15 minutes
-   - **Header**: `Authorization: Bearer your_cron_secret`
-3. Replace `your_cron_secret` with the value of `CRON_SECRET` in your `.env`
+Built for the **[Notion MCP Challenge](https://dev.to/challenges/notion-2026-03-04)** · Made with ☕ from Cameroon 🇨🇲
+
+</div>

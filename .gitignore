@@ -46,3 +46,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .kiro/save1
+aboutme.md
+github-profile-readme.md

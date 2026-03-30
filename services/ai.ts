@@ -51,7 +51,7 @@ async function tryClaude(keys: string[], prompt: string): Promise<string | null>
         messages: [{ role: 'user', content: prompt }],
       });
       return (msg.content[0] as any).text;
-    } catch {}
+    } catch { }
   }
   return null;
 }
@@ -66,7 +66,7 @@ async function tryDeepSeek(keys: string[], prompt: string): Promise<string | nul
         max_tokens: 300,
       });
       return res.choices[0].message.content;
-    } catch {}
+    } catch { }
   }
   return null;
 }
@@ -160,7 +160,7 @@ export async function generateSubject(client: {
   project: string;
   last_update: string;
 }): Promise<string> {
-  const prompt = `Write a concise email subject line (max 8 words) for a freelancer project update.
+  const prompt = `Write a concise email subject line (max ${AI_CONFIG.emailSubjectLimit} words) for a freelancer project update.
 Project: ${client.project}
 Last update: ${client.last_update}
 Return only the subject line, nothing else. No quotes.`;

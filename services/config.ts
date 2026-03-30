@@ -8,6 +8,9 @@ export const AI_CONFIG = {
   // Max words for generated email drafts
   draftWordLimit: parseInt(process.env.DRAFT_WORD_LIMIT || '120'),
 
+  // Max words for generated email drafts
+  emailSubjectLimit: parseInt(process.env.EMAIL_SUBJECT_LIMIT || '8'),
+
   // Number of previously sent messages to include as context
   sentHistoryLimit: parseInt(process.env.SENT_HISTORY_LIMIT || '3'),
 

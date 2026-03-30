@@ -139,7 +139,28 @@ Vercel Hobby doesn't support sub-daily crons. Use [cron-job.org](https://cron-jo
 
 ---
 
-## 📡 API Reference
+## ⚙️ Configuration
+
+All tunable settings live in `services/config.ts` and can be overridden via environment variables:
+
+| Variable | Default | Description |
+|---|---|---|
+| `FREELANCER_NAME` | `"Your Freelancer"` | Name used in AI email sign-offs |
+| `DRAFT_WORD_LIMIT` | `120` | Max words for generated drafts |
+| `SENT_HISTORY_LIMIT` | `3` | Previous sent messages passed to AI as context |
+| `DRAFT_HISTORY_LIMIT` | `10` | Max drafts shown in the history panel |
+
+Set any of these in your `.env.local` to override the defaults:
+
+```env
+FREELANCER_NAME=John Doe
+DRAFT_WORD_LIMIT=150
+SENT_HISTORY_LIMIT=5
+```
+
+---
+
+
 
 All endpoints are relative to your app URL. Protected endpoints require `Authorization: Bearer YOUR_CRON_SECRET`.
 

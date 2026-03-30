@@ -21,6 +21,7 @@ interface Step {
   fields: Field[];
   validateEndpoint?: string;
   optional?: boolean;
+  images?: string[];
 }
 
 const STEPS: Step[] = [
@@ -44,6 +45,15 @@ const STEPS: Step[] = [
       { key: 'NOTION_DATABASE_ID', label: 'Database ID', placeholder: '32-character ID from the URL' },
     ],
     validateEndpoint: '/api/setup/validate-notion',
+    images: [
+      '/img/setup/notion/1-notion-new-integration.png',
+      '/img/setup/notion/2-notion-integration-secret.png',
+      '/img/setup/notion/3-notion-database-creation.png',
+      '/img/setup/notion/4-notion-database-creation.png',
+      '/img/setup/notion/5-notion-empty-database.png',
+      '/img/setup/notion/6-notion-structure-database.png',
+      '/img/setup/notion/7-notion-add-connection.png',
+    ],
   },
   {
     id: 'supabase',
@@ -62,6 +72,12 @@ const STEPS: Step[] = [
       { key: 'NEXT_PUBLIC_SUPABASE_ANON_KEY', label: 'Anon Key', placeholder: 'eyJ...', type: 'password' },
     ],
     validateEndpoint: '/api/setup/validate-supabase',
+    images: [
+      '/img/setup/supabase/1-supabase-new-project.png',
+      '/img/setup/supabase/2-supabase-project-url.png',
+      '/img/setup/supabase/3-supabase-project-setting.png',
+      '/img/setup/supabase/4-supabase-anon-key.png',
+    ],
   },
   {
     id: 'gmail',
@@ -81,6 +97,10 @@ const STEPS: Step[] = [
       { key: 'GMAIL_APP_PASSWORD', label: 'App Password', placeholder: 'xxxx xxxx xxxx xxxx', type: 'password', hint: '16-character app password, not your regular password' },
     ],
     validateEndpoint: '/api/setup/validate-gmail',
+    images: [
+      '/img/setup/google/1-google-manage-account-search.png',
+      '/img/setup/google/2-google-app-password-creation.png',
+    ],
   },
   {
     id: 'ai',
@@ -122,6 +142,7 @@ export default function SetupPage() {
   const [validated, setValidated] = useState<Record<string, boolean>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [done, setDone] = useState(false);
+  const [lightbox, setLightbox] = useState<{ images: string[]; index: number } | null>(null);
 
   const step = STEPS[currentStep];
 
@@ -254,6 +275,22 @@ export default function SetupPage() {
             </ol>
           )}
 
+          {step.images && step.images.length > 0 && (
+            <div className="mb-5">
+              <div className="text-xs mb-2" style={{ color: 'var(--text-muted)' }}>📸 Step screenshots — click to enlarge</div>
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {step.images.map((img, i) => (
+                  <button key={img} onClick={() => setLightbox({ images: step.images!, index: i })}
+                    className="shrink-0 rounded-lg overflow-hidden border transition-all hover:scale-105"
+                    style={{ border: '1px solid var(--border)' }}>
+                    <img src={img} alt={`Step ${i + 1}`} className="h-20 w-32 object-cover" />
+                    <div className="text-xs text-center py-1" style={{ background: 'var(--bg-secondary)', color: 'var(--text-muted)' }}>{i + 1}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className="flex flex-col gap-3 mb-5">
             {step.fields.map(f => (
               <div key={f.key}>
@@ -302,6 +339,31 @@ export default function SetupPage() {
           </Link>
         </div>
       </div>
+
+      {/* Lightbox */}
+      {lightbox && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.85)' }}
+          onClick={() => setLightbox(null)}>
+          <div className="relative max-w-4xl w-full" onClick={e => e.stopPropagation()}>
+            <img src={lightbox.images[lightbox.index]} alt={`Step ${lightbox.index + 1}`}
+              className="w-full rounded-xl shadow-2xl" />
+            <div className="flex items-center justify-between mt-3">
+              <button onClick={() => setLightbox(l => l && l.index > 0 ? { ...l, index: l.index - 1 } : l)}
+                disabled={lightbox.index === 0}
+                className="px-4 py-2 rounded-lg text-sm text-white disabled:opacity-30"
+                style={{ background: 'rgba(255,255,255,0.1)' }}>← Prev</button>
+              <span className="text-white text-sm">{lightbox.index + 1} / {lightbox.images.length}</span>
+              <button onClick={() => setLightbox(l => l && l.index < l.images.length - 1 ? { ...l, index: l.index + 1 } : l)}
+                disabled={lightbox.index === lightbox.images.length - 1}
+                className="px-4 py-2 rounded-lg text-sm text-white disabled:opacity-30"
+                style={{ background: 'rgba(255,255,255,0.1)' }}>Next →</button>
+            </div>
+            <button onClick={() => setLightbox(null)}
+              className="absolute top-2 right-2 w-8 h-8 rounded-full flex items-center justify-center text-white"
+              style={{ background: 'rgba(0,0,0,0.5)' }}>✕</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

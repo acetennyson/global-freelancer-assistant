@@ -192,32 +192,11 @@ export default function Dashboard() {
             {sendingAll ? 'Sending...' : '⚡ Send All Ready'}
           </button>
           <ThemeToggle />
-          <button onClick={() => setShowSettings(s => !s)}
-            className="text-xs px-3 py-1.5 rounded-lg transition-colors"
-            style={{ background: showSettings ? 'var(--accent-subtle)' : 'var(--bg-secondary)', border: '1px solid var(--border)', color: showSettings ? 'var(--accent)' : 'var(--text-secondary)' }}>
-            ⚙
-          </button>
+          {/* Settings button removed — credentials managed via .env or /setup */}
         </div>
       </header>
 
-      {/* Settings dropdown */}
-      {showSettings && (
-        <div className="shrink-0 px-5 py-4" style={{ borderBottom: '1px solid var(--border)', background: 'var(--bg-secondary)' }}>
-          <div className="flex gap-3 max-w-2xl flex-wrap">
-            <input type="password" placeholder="Notion Token" value={token} onChange={e => setToken(e.target.value)}
-              className="flex-1 min-w-0 rounded-lg px-3 py-2 text-xs focus:outline-none"
-              style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text)' }} />
-            <input type="text" placeholder="Database ID" value={dbId} onChange={e => setDbId(e.target.value)}
-              className="flex-1 min-w-0 rounded-lg px-3 py-2 text-xs focus:outline-none"
-              style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text)' }} />
-            <button onClick={saveSettings}
-              className="px-4 py-2 rounded-lg text-xs font-medium transition-colors text-white"
-              style={{ background: 'var(--accent)' }}>
-              {saved ? '✓ Saved' : 'Save'}
-            </button>
-          </div>
-        </div>
-      )}
+      {/* Settings panel removed — credentials managed via .env or /setup */}
 
       {/* World clock strip */}
       <WorldClockStrip clients={clients.map(c => ({ name: c.name, timezone: c.timezone, available: c.available ?? false, send_window: c.send_window }))} />

@@ -30,9 +30,11 @@ This solves the "circular key problem" because:
 - Supabase anon key is public by design (RLS handles security)
 - All other secrets are stored behind auth, only accessible to the authenticated user
 
-### Notion OAuth
-- Instead of manually creating an integration token, guide users through Notion OAuth
-- After auth, automatically create the Clients database with the correct schema
+### Notion Webhook Integration
+- Register a Notion webhook pointing to `/api/webhooks/notion`
+- When a client page changes in Notion (e.g. `Send_Status` set to `Ready`, `Last_Update` changed), the app updates instantly without manual sync
+- Requires Notion Plus plan or above
+- Would trigger Supabase Realtime update to reflect changes on the dashboard immediately
 
 ### Setup Wizard
 - First-run detection

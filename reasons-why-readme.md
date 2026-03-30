@@ -20,3 +20,25 @@ You could create a separate Notion database for logs. But:
 - Notion's filter/sort API is not designed for time-series data
 
 Supabase handles all of this natively with zero rate limit concerns on the free tier.
+
+## Why sent_history instead of draft_history for AI context?
+
+Draft history contains every generated draft — including ones you discarded, regenerated, or never sent. Using those as AI context would pollute the model with messages the client never received, leading to confusing continuity ("following up on X" when X was never sent).
+
+`sent_history` only contains messages that were actually delivered. The AI builds on what the client has already read, making each new draft feel like a natural continuation of the conversation.
+
+## Why Nodemailer over Resend/SendGrid?
+
+Resend and SendGrid have free tier limits (3,000/month and 100/day respectively). Nodemailer with Gmail has no sending limit beyond Gmail's own (500/day for regular accounts, 2,000/day for Google Workspace). For a freelancer sending updates to 8-10 clients, Gmail is more than sufficient and requires no third-party account.
+
+## Why multi-provider AI with key rotation?
+
+A single AI provider with a single key is a single point of failure. Free tier quotas are small — Gemini's free tier can be exhausted in a single session of testing. By rotating through multiple keys per provider and falling back to the next provider on failure, the app stays functional even when individual keys hit rate limits. This is especially important for a tool that needs to work reliably at any time of day.
+
+## Why CSS variables for theming instead of Tailwind dark mode?
+
+Tailwind's `dark:` prefix requires adding duplicate classes for every element. CSS variables allow a single class change on the root element to update the entire UI. Adding a new themed component requires zero extra work — it just uses `var(--bg)`, `var(--text)`, etc. and inherits the current theme automatically.
+
+## Why a /setup wizard?
+
+Setting up the app requires credentials from 4+ different services (Notion, Supabase, Gmail, AI providers). Without guidance, users would need to figure out where to find each key, what format it should be in, and whether it's working. The setup wizard provides step-by-step instructions with screenshots, inline validation, and a final `.env` block ready to copy — reducing setup time from 30+ minutes of trial and error to under 5 minutes.

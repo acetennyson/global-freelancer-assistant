@@ -139,7 +139,77 @@ Vercel Hobby doesn't support sub-daily crons. Use [cron-job.org](https://cron-jo
 
 ---
 
-## 📁 Project Structure
+## 📡 API Reference
+
+All endpoints are relative to your app URL. Protected endpoints require `Authorization: Bearer YOUR_CRON_SECRET`.
+
+### `GET /api/clients`
+Returns all active clients (Status = "In progress") with local time and availability.
+
+### `POST /api/generate-draft`
+Generates an AI draft for a client using project context and sent history.
+```json
+{ "notion_page_id": "string" }
+```
+
+### `POST /api/send-now`
+Sends the current draft immediately, bypassing the timezone window.
+```json
+{ "notion_page_id": "string" }
+```
+
+### `POST /api/send-all-ready`
+Sends all clients with `Send_Status = Ready` who are currently in their window.
+No body required.
+
+### `POST /api/mark-ready`
+Marks a client's draft as ready to send.
+```json
+{ "notion_page_id": "string", "client_name": "string" }
+```
+
+### `POST /api/mark-responded`
+Toggles a client's responded status.
+```json
+{ "notion_page_id": "string", "client_name": "string", "responded": true }
+```
+
+### `GET /api/draft-history?id=NOTION_PAGE_ID`
+Returns the last 10 generated drafts for a client.
+
+### `GET /api/activity`
+Returns the last 20 activity log entries.
+
+### `POST /api/chat`
+Ask the AI assistant a question with full client context.
+```json
+{ "question": "Who should I reach out to first?", "context": [...clients] }
+```
+
+### `GET /api/notion/sync`
+Syncs all active clients from Notion to Supabase.
+
+### `POST /api/save-client`
+Creates or updates a client in Notion. If `notion_page_id` is provided, updates existing. Otherwise creates new.
+```json
+{
+  "notion_page_id": "string (optional — omit to create)",
+  "name": "string",
+  "timezone": "America/New_York",
+  "project": "string",
+  "last_update": "string",
+  "next_action": "string (optional)",
+  "email": "string",
+  "send_window": "10:00-14:00",
+  "status": "In progress"
+}
+```
+
+### `GET /api/cron/send` *(protected)*
+Triggered by cron-job.org every 15 minutes. Sends emails to all `Ready` clients in their window.
+Requires header: `Authorization: Bearer YOUR_CRON_SECRET`
+
+---
 
 ```
 /app

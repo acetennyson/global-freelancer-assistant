@@ -25,6 +25,9 @@
 *.pem
 readme.txt
 readme2.txt
+AGENTS.md
+CLAUDE.md
+devpost.md
 
 # debug
 npm-debug.log*
